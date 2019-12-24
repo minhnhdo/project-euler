@@ -84,3 +84,12 @@ fn prime_factors(mut n: u64) -> HashMap<u64, u32> {
     }
     ret
 }
+
+pub fn problem006() -> u32 {
+    let s = (1..=100).sum::<u32>();
+    s * s - (1..=100).map(|n| n * n).sum::<u32>()
+}
+
+pub fn problem007() -> u64 {
+    primes_iter().skip(10_000).take(1).max().unwrap()
+}
