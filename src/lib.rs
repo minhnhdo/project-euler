@@ -21,7 +21,12 @@ pub fn problem002() -> u64 {
 }
 
 pub fn primes_iter() -> impl Iterator<Item = u64> {
-    (2..).filter(|n| (2..(*n as f64).sqrt() as u64 + 1).all(|i| n % i != 0))
+    iter::once(2).chain((3..).filter(|n| {
+        n % 2 != 0
+            && (3..=(*n as f64).sqrt() as u64)
+                .step_by(2)
+                .all(|i| n % i != 0)
+    }))
 }
 
 // call with 600851475143
