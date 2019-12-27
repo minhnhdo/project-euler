@@ -20,7 +20,7 @@ pub fn problem002() -> u64 {
         .sum()
 }
 
-pub fn primes_iter() -> impl Iterator<Item = u64> {
+fn primes_iter() -> impl Iterator<Item = u64> {
     iter::once(2).chain((3..).filter(|n| {
         n % 2 != 0
             && (3..=(*n as f64).sqrt() as u64)
