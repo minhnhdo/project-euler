@@ -1,5 +1,5 @@
 use project_euler;
 
 fn main() {
-    println!("{}", project_euler::problem016());
+    println!("{}", project_euler::problem017());
 }

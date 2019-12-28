@@ -692,3 +692,14 @@ pub fn problem016() -> u32 {
         .map(|d| char_digit_to_u8(d) as u32)
         .sum()
 }
+
+pub fn problem017() -> u32 {
+    (1..=1000)
+        .map(|n| {
+            say_number::say(n)
+                .chars()
+                .map(|c| if c == ' ' { 0 } else { 1 })
+                .sum::<u32>()
+        })
+        .sum()
+}
