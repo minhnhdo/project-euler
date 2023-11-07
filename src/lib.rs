@@ -1,7 +1,7 @@
 use num::bigint::BigUint;
 use num::traits::One;
 use std::collections::HashMap;
-use std::iter;
+use std::{cmp, iter};
 
 pub fn primes_iter() -> impl Iterator<Item = u64> {
     iter::once(2).chain((3..).filter(|n| {
@@ -75,4 +75,34 @@ pub fn collatz_iter(mut n: u64) -> impl Iterator<Item = u64> {
 pub fn k_combinations(n: &BigUint, k: &BigUint) -> BigUint {
     num::range(n - k + BigUint::one(), n + BigUint::one()).product::<BigUint>()
         / num::range(BigUint::one(), k + BigUint::one()).product::<BigUint>()
+}
+
+pub fn triangle_row_iter(data: &[u32]) -> impl Iterator<Item = &[u32]> {
+    let mut current_index = 0;
+    let mut current_length = 1;
+    iter::from_fn(move || {
+        if current_index + current_length > data.len() {
+            return None;
+        }
+
+        let ret = &data[current_index..current_index + current_length];
+        current_index += current_length;
+        current_length += 1;
+        Some(ret)
+    })
+}
+
+pub fn largest_triangular_route_sum(data: &[u32]) -> u64 {
+    let mut previous_sums = Vec::new();
+    for row in triangle_row_iter(data) {
+        let length = row.len();
+        let mut sums = Vec::with_capacity(length);
+        for (i, &n) in row.iter().enumerate() {
+            let left = if i > 0 { previous_sums[i - 1] } else { 0 };
+            let up = if i < length - 1 { previous_sums[i] } else { 0 };
+            sums.push(cmp::max(left, up) + n as u64);
+        }
+        previous_sums = sums;
+    }
+    *previous_sums.iter().max().unwrap()
 }
