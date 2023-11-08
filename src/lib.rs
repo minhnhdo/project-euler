@@ -92,7 +92,7 @@ pub fn triangle_row_iter<I>(data: &[I]) -> impl Iterator<Item = &[I]> {
     })
 }
 
-pub fn largest_triangular_route_sum(data: &[u32]) -> u64 {
+pub fn largest_triangular_route_sum(data: &[u8]) -> u64 {
     let mut previous_sums = Vec::new();
     for row in triangle_row_iter(data) {
         let length = row.len();
