@@ -77,7 +77,7 @@ pub fn k_combinations(n: &BigUint, k: &BigUint) -> BigUint {
         / num::range(BigUint::one(), k + BigUint::one()).product::<BigUint>()
 }
 
-pub fn triangle_row_iter(data: &[u32]) -> impl Iterator<Item = &[u32]> {
+pub fn triangle_row_iter<I>(data: &[I]) -> impl Iterator<Item = &[I]> {
     let mut current_index = 0;
     let mut current_length = 1;
     iter::from_fn(move || {
