@@ -1,6 +1,6 @@
 use num::bigint::BigUint;
 use num::traits::One;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::{cmp, iter};
 
 pub fn primes_iter() -> impl Iterator<Item = u64> {
@@ -46,6 +46,26 @@ pub fn prime_factors(mut n: u64) -> HashMap<u64, u32> {
             return ret;
         }
     }
+    ret
+}
+
+pub fn all_divisors(n: u64) -> Vec<u64> {
+    let mut set = HashSet::new();
+    set.insert(1);
+    for (p, c) in prime_factors(n) {
+        for _ in 0..c {
+            let to_insert = set.iter().map(|i| i * p).collect::<Vec<_>>();
+            set.extend(to_insert);
+        }
+    }
+    let mut ret = set.into_iter().collect::<Vec<_>>();
+    ret.sort();
+    ret
+}
+
+pub fn proper_divisors(n: u64) -> Vec<u64> {
+    let mut ret = all_divisors(n);
+    ret.pop();
     ret
 }
 
@@ -105,4 +125,62 @@ pub fn largest_triangular_route_sum(data: &[u8]) -> u64 {
         previous_sums = sums;
     }
     *previous_sums.iter().max().unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_primes_iter() {
+        assert_eq!(
+            primes_iter().take(10).collect::<Vec<_>>(),
+            vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+        );
+    }
+
+    #[test]
+    fn test_largest_prime_factor() {
+        assert_eq!(largest_prime_factor(13195), 29);
+        assert_eq!(largest_prime_factor(600851475143), 6857);
+    }
+
+    #[test]
+    fn test_is_palindrome() {
+        assert!(is_palindrome("9009"));
+        assert!(is_palindrome("12321"));
+        assert!(!is_palindrome("12345"));
+    }
+
+    #[test]
+    fn test_prime_factors() {
+        let mut expected = HashMap::new();
+        expected.insert(2, 2);
+        expected.insert(5, 2);
+        assert_eq!(prime_factors(100), expected);
+    }
+
+    #[test]
+    fn test_proper_divisors() {
+        assert_eq!(proper_divisors(28), vec![1, 2, 4, 7, 14]);
+    }
+
+    #[test]
+    fn test_char_digit_to_u8() {
+        assert_eq!(char_digit_to_u8('0'), 0);
+        assert_eq!(char_digit_to_u8('1'), 1);
+        assert_eq!(char_digit_to_u8('2'), 2);
+        assert_eq!(char_digit_to_u8('3'), 3);
+        assert_eq!(char_digit_to_u8('4'), 4);
+        assert_eq!(char_digit_to_u8('5'), 5);
+        assert_eq!(char_digit_to_u8('6'), 6);
+        assert_eq!(char_digit_to_u8('7'), 7);
+        assert_eq!(char_digit_to_u8('8'), 8);
+        assert_eq!(char_digit_to_u8('9'), 9);
+    }
+
+    #[test]
+    fn test_number_of_factors() {
+        assert_eq!(number_of_factors(28), 6);
+    }
 }
