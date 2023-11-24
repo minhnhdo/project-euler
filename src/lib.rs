@@ -12,6 +12,10 @@ pub fn primes_iter() -> impl Iterator<Item = u64> {
     }))
 }
 
+pub fn abundant_numbers_iter() -> impl Iterator<Item = u64> {
+    (2..).filter(|&n| proper_divisors(n).iter().sum::<u64>() > n)
+}
+
 pub fn largest_prime_factor(mut n: u64) -> u64 {
     if n <= 1 {
         return n;
