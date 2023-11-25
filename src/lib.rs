@@ -3,6 +3,10 @@ use num::traits::One;
 use std::collections::{HashMap, HashSet};
 use std::{cmp, iter};
 
+mod permutation;
+
+pub use permutation::permutations;
+
 pub fn primes_iter() -> impl Iterator<Item = u64> {
     iter::once(2).chain((3..).filter(|n| {
         n % 2 != 0
