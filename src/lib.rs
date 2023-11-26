@@ -135,6 +135,18 @@ pub fn largest_triangular_route_sum(data: &[u8]) -> u64 {
     *previous_sums.iter().max().unwrap()
 }
 
+pub fn fibonacci_iter<T>(mut a: T, mut b: T) -> impl Iterator<Item = T>
+where
+    T: Clone + std::ops::Add<Output = T>,
+{
+    iter::from_fn(move || {
+        let ret = a.clone();
+        a = b.clone();
+        b = ret.clone() + a.clone();
+        Some(ret)
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
